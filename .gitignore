@@ -1,0 +1,50 @@
+# Ignore node_modules (dependency directory)
+node_modules/
+
+# Ignore build artifacts (for TypeScript)
+dist/
+build/
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Ignore Playwright reports and traces
+playwright-report/
+playwright/.cache/
+trace.zip
+
+# Ignore environment variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Ignore output from Playwright test executions
+test-results/
+*.png
+*.mp4
+
+# Ignore VSCode settings folder
+.vscode/
+
+# Ignore TypeScript cache
+*.tsbuildinfo
+
+# Ignore JetBrains IDEs (e.g., WebStorm) folder
+.idea/
+
+# Ignore macOS specific files
+.DS_Store
+
+# Ignore coverage reports
+coverage/
+
+# Ignore package-lock and yarn.lock (optional, depending on your preference)
+# Uncomment the following lines if you want to ignore lock files
+# package-lock.json
+# yarn.lock
