@@ -3,7 +3,9 @@ import { HomePage } from './pages/HomePage';
 import { SignUpPage } from './pages/SignUpPage';
 import { AccountPage } from './pages/AccountPage';
 import { ContactUsPage } from './pages/ContactUsPage';
-import { ProductsPage } from './pages/ProductPage';
+import { ProductsPage } from './pages/ProductsPage';
+import { ProductDetailsPage } from './pages/ProductDetailsPage';
+import { CartPage } from './pages/CartPage';
 
 export class PageObjectManager {
   private page: Page;
@@ -12,6 +14,8 @@ export class PageObjectManager {
   private accountPage!: AccountPage;
   private contactUsPage!: ContactUsPage;
   private productsPage!: ProductsPage;
+  private productDetailsPage!: ProductDetailsPage;
+  private cartPage!: CartPage;
 
 
   constructor(page: Page) {
@@ -51,5 +55,19 @@ export class PageObjectManager {
       this.productsPage = new ProductsPage(this.page);
     }
     return this.productsPage;
+  }
+
+  getProductDetailsPage(): ProductDetailsPage {
+    if (!this.productDetailsPage) {
+      this.productDetailsPage = new ProductDetailsPage(this.page);
+    }
+    return this.productDetailsPage;
+  }
+
+  getCartPage(): CartPage {
+    if (!this.cartPage) {
+      this.cartPage = new CartPage(this.page);
+    }
+    return this.cartPage;
   }
 }

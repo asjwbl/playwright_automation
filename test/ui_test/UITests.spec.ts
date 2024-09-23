@@ -122,6 +122,7 @@ test.describe('UI test Cases', () => {
   test('should navigate to the All Products page and verify product details', async () => {
     const homePage = pom.getHomePage();
     const productsPage = pom.getProductsPage();
+    const productDetailsPage = pom.getProductDetailsPage();
 
     await homePage.navigate('/');
     await homePage.verifyHomePageLoaded();
@@ -131,8 +132,8 @@ test.describe('UI test Cases', () => {
     await productsPage.verifyProductsListVisible();
     await productsPage.clickFirstProduct();
 
-    await productsPage.verifyProductDetailVisible();
-    const productDetails = await productsPage.verifyProductDetails();
+    await productDetailsPage.verifyProductDetailVisible();
+    const productDetails = await productDetailsPage.verifyProductDetails();
 
     // Verify product details
     expect(productDetails.productName).toBeTruthy();
@@ -190,6 +191,7 @@ test.describe('UI test Cases', () => {
   test('should add products to the cart and verify their details', async () => {
     const homePage = pom.getHomePage();
     const productsPage = pom.getProductsPage();
+    const cartPage = pom.getCartPage();
 
     await homePage.navigate('/');
     await homePage.verifyHomePageLoaded();
@@ -204,9 +206,27 @@ test.describe('UI test Cases', () => {
     await productsPage.clickContinueShoppingButton();
     await productsPage.clickViewCartButton();
 
-    await productsPage.verifyProductsInCart(2); // Ensure there are two products in the cart
-    await productsPage.verifyProductDetailsInCart(1, products[0]);
-    await productsPage.verifyProductDetailsInCart(2, products[1]);
+    await cartPage.verifyProductsInCart(2); // Ensure there are two products in the cart
+    await cartPage.verifyProductDetailsInCart(1, products[0]);
+    await cartPage.verifyProductDetailsInCart(2, products[1]);
+  });
+
+  test('should verify the product quantity in the cart', async () => {
+    const homePage = pom.getHomePage();
+    const productsPage = pom.getProductsPage();
+    const productDetailsPage = pom.getProductDetailsPage();
+    const cartPage = pom.getCartPage();
+
+    await homePage.navigate('/');
+    await homePage.verifyHomePageLoaded();
+    
+    await productsPage.clickFirstProduct();
+    await productDetailsPage.verifyProductDetailVisible();
+    await productDetailsPage.setProductQuantity(4);
+    await productDetailsPage.clickAddToCartButton();
+    await productDetailsPage.clickViewCartButton();
+    await cartPage.verifyCartPageVisible();
+    await cartPage.verifyProductQuantityInCart('4');
   });
 
 });
