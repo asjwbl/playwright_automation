@@ -7,21 +7,33 @@ import { ProductsPage } from './pages/ProductsPage';
 import { ProductDetailsPage } from './pages/ProductDetailsPage';
 import { CartPage } from './pages/CartPage';
 
+/**
+ * PageObjectManager class is responsible for managing and providing access 
+ * to different page objects. It ensures that only one instance of each page object 
+ * is created and reused throughout the test execution.
+ */
 export class PageObjectManager {
-  private page: Page;
-  private homePage!: HomePage;
-  private signUpPage!: SignUpPage;
-  private accountPage!: AccountPage;
-  private contactUsPage!: ContactUsPage;
-  private productsPage!: ProductsPage;
-  private productDetailsPage!: ProductDetailsPage;
-  private cartPage!: CartPage;
+  private page: Page; // The Playwright Page object used for interacting with the browser.
+  private homePage!: HomePage; // Instance of HomePage for interacting with the home page.
+  private signUpPage!: SignUpPage; // Instance of SignUpPage for interacting with the sign-up page.
+  private accountPage!: AccountPage; // Instance of AccountPage for interacting with the user account page.
+  private contactUsPage!: ContactUsPage; // Instance of ContactUsPage for interacting with the contact us page.
+  private productsPage!: ProductsPage; // Instance of ProductsPage for interacting with the products page.
+  private productDetailsPage!: ProductDetailsPage; // Instance of ProductDetailsPage for interacting with product details.
+  private cartPage!: CartPage; // Instance of CartPage for interacting with the shopping cart page.
 
-
+  /**
+   * Constructor to initialize the PageObjectManager with a Playwright Page object.
+   * @param page - The Playwright Page object used for navigating and interacting with the browser.
+   */
   constructor(page: Page) {
     this.page = page;
   }
 
+  /**
+   * Provides an instance of HomePage. Creates the instance if it doesn't already exist.
+   * @returns {HomePage} The HomePage object.
+   */
   getHomePage(): HomePage {
     if (!this.homePage) {
       this.homePage = new HomePage(this.page);
@@ -29,6 +41,10 @@ export class PageObjectManager {
     return this.homePage;
   }
 
+  /**
+   * Provides an instance of SignUpPage. Creates the instance if it doesn't already exist.
+   * @returns {SignUpPage} The SignUpPage object.
+   */
   getSignUpPage(): SignUpPage {
     if (!this.signUpPage) {
       this.signUpPage = new SignUpPage(this.page);
@@ -36,6 +52,10 @@ export class PageObjectManager {
     return this.signUpPage;
   }
 
+  /**
+   * Provides an instance of AccountPage. Creates the instance if it doesn't already exist.
+   * @returns {AccountPage} The AccountPage object.
+   */
   getAccountPage(): AccountPage {
     if (!this.accountPage) {
       this.accountPage = new AccountPage(this.page);
@@ -43,6 +63,10 @@ export class PageObjectManager {
     return this.accountPage;
   }
 
+  /**
+   * Provides an instance of ContactUsPage. Creates the instance if it doesn't already exist.
+   * @returns {ContactUsPage} The ContactUsPage object.
+   */
   getContactUsPage(): ContactUsPage {
     if (!this.contactUsPage) {
       this.contactUsPage = new ContactUsPage(this.page);
@@ -50,6 +74,10 @@ export class PageObjectManager {
     return this.contactUsPage;
   }
 
+  /**
+   * Provides an instance of ProductsPage. Creates the instance if it doesn't already exist.
+   * @returns {ProductsPage} The ProductsPage object.
+   */
   getProductsPage(): ProductsPage {
     if (!this.productsPage) {
       this.productsPage = new ProductsPage(this.page);
@@ -57,6 +85,10 @@ export class PageObjectManager {
     return this.productsPage;
   }
 
+  /**
+   * Provides an instance of ProductDetailsPage. Creates the instance if it doesn't already exist.
+   * @returns {ProductDetailsPage} The ProductDetailsPage object.
+   */
   getProductDetailsPage(): ProductDetailsPage {
     if (!this.productDetailsPage) {
       this.productDetailsPage = new ProductDetailsPage(this.page);
@@ -64,6 +96,10 @@ export class PageObjectManager {
     return this.productDetailsPage;
   }
 
+  /**
+   * Provides an instance of CartPage. Creates the instance if it doesn't already exist.
+   * @returns {CartPage} The CartPage object.
+   */
   getCartPage(): CartPage {
     if (!this.cartPage) {
       this.cartPage = new CartPage(this.page);
