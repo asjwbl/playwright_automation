@@ -27,7 +27,7 @@ export class ProductsPage extends BasePage {
    */
   async clickFirstProduct() {
     // Clicks the 'View Product' link for the first product in the product list.
-    await this.page.click('.features_items .product-image-wrapper:first-of-type a:has-text("View Product")');
+    await this.page.click("(//a[contains(text(),'View Product')])[1]");
   }
 
   /**
