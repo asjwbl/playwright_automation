@@ -1,9 +1,9 @@
 import { Browser, Page, chromium, test, expect } from '@playwright/test';
 import { PageObjectManager } from '../../src/PageObjectManager';
 import { faker } from '@faker-js/faker';
-import { createNewUser, deleteUserAccount, logout } from './predefinedSteps';
+import { registerNewUser, deleteUserAccount, logout } from './predefinedSteps';
 import path from 'path';
-import { products } from '../../src/test_data/productsData';
+import { paymentDetails, products } from '../../src/test_data/testData';
 
 test.describe('UI Test Cases', () => {
 
@@ -17,6 +17,11 @@ test.describe('UI Test Cases', () => {
     const context = await browser.newContext();
     page = await context.newPage();
     pom = new PageObjectManager(page);
+    const homePage = pom.getHomePage();
+
+    // Navigate to home page and verify it is loaded
+    await homePage.navigate('/');
+    await homePage.verifyHomePageLoaded();
   });
 
   // Close the browser after all tests
@@ -27,7 +32,7 @@ test.describe('UI Test Cases', () => {
 
   // Register a new user test case
   test('should register a new user', async () => {
-    const { name } = await createNewUser(pom);
+    const { name } = await registerNewUser(pom);
     try {
       await deleteUserAccount(pom, name);
     } catch (error) {
@@ -41,11 +46,8 @@ test.describe('UI Test Cases', () => {
     const signUpPage = pom.getSignUpPage();
     const accountPage = pom.getAccountPage();
 
-    const { email, password, name } = await createNewUser(pom);
+    const { email, password, name } = await registerNewUser(pom);
     await logout(pom, name);
-
-    await homePage.navigate('/');
-    await homePage.verifyHomePageLoaded();
     await homePage.clickSignIn();
 
     await signUpPage.verifyLoginToYourAccountVisible();
@@ -63,8 +65,7 @@ test.describe('UI Test Cases', () => {
   test('Login with invalid credentials', async () => {
     const homePage = pom.getHomePage();
     const signUpPage = pom.getSignUpPage();
-    await homePage.navigate('/');
-    await homePage.verifyHomePageLoaded();
+    
     await homePage.clickSignIn();
     await signUpPage.login('invalid@example.com', 'invalidpassword');
     await signUpPage.verifyLoginFailed();
@@ -72,7 +73,7 @@ test.describe('UI Test Cases', () => {
 
   // Error when registering with an existing email
   test('should show error when registering with an existing email', async () => {
-    const { email } = await createNewUser(pom); // Create a user to ensure the email is already registered
+    const { email } = await registerNewUser(pom); // Create a user to ensure the email is already registered
 
     const homePage = pom.getHomePage();
     const signUpPage = pom.getSignUpPage();
@@ -96,8 +97,6 @@ test.describe('UI Test Cases', () => {
     const homePage = pom.getHomePage();
     const contactUsPage = pom.getContactUsPage();
 
-    await homePage.navigate('/');
-    await homePage.verifyHomePageLoaded();
     await homePage.clickContactUsLink();
 
     await contactUsPage.verifyGetInTouchVisible();
@@ -126,8 +125,6 @@ test.describe('UI Test Cases', () => {
   test('should navigate to the Test Cases page successfully', async () => {
     const homePage = pom.getHomePage();
 
-    await homePage.navigate('/');
-    await homePage.verifyHomePageLoaded();
     await homePage.clickTestCases();
 
     const testCasesPageTitle = await page.title();
@@ -140,8 +137,6 @@ test.describe('UI Test Cases', () => {
     const productsPage = pom.getProductsPage();
     const productDetailsPage = pom.getProductDetailsPage();
 
-    await homePage.navigate('/');
-    await homePage.verifyHomePageLoaded();
     await homePage.clickProducts();
 
     await productsPage.verifyAllProductsPageVisible();
@@ -165,8 +160,6 @@ test.describe('UI Test Cases', () => {
     const homePage = pom.getHomePage();
     const productsPage = pom.getProductsPage();
 
-    await homePage.navigate('/');
-    await homePage.verifyHomePageLoaded();
     await homePage.clickProducts();
 
     await productsPage.verifyAllProductsPageVisible();
@@ -182,9 +175,6 @@ test.describe('UI Test Cases', () => {
   test('should verify subscription functionality', async () => {
     const homePage = pom.getHomePage();
 
-    await homePage.navigate('/');
-    await homePage.verifyHomePageLoaded();
-
     await homePage.scrollToFooter();
     await homePage.verifySubscriptionText();
     await homePage.enterSubscriptionEmail(faker.internet.email());
@@ -195,9 +185,6 @@ test.describe('UI Test Cases', () => {
   // Verify subscription functionality on Cart page
   test('should verify subscription functionality in the Cart page', async () => {
     const homePage = pom.getHomePage();
-
-    await homePage.navigate('/');
-    await homePage.verifyHomePageLoaded();
 
     await homePage.clickCart();
     await homePage.scrollToFooter();
@@ -213,8 +200,6 @@ test.describe('UI Test Cases', () => {
     const productsPage = pom.getProductsPage();
     const cartPage = pom.getCartPage();
 
-    await homePage.navigate('/');
-    await homePage.verifyHomePageLoaded();
     await homePage.clickProducts();
 
     await productsPage.verifyAllProductsPageVisible();
@@ -232,13 +217,9 @@ test.describe('UI Test Cases', () => {
 
   // Verify product quantity in the cart
   test('should verify the product quantity in the cart', async () => {
-    const homePage = pom.getHomePage();
     const productsPage = pom.getProductsPage();
     const productDetailsPage = pom.getProductDetailsPage();
     const cartPage = pom.getCartPage();
-
-    await homePage.navigate('/');
-    await homePage.verifyHomePageLoaded();
 
     await productsPage.clickFirstProduct();
     await productDetailsPage.verifyProductDetailVisible();
@@ -247,6 +228,56 @@ test.describe('UI Test Cases', () => {
     await productDetailsPage.clickViewCartButton();
     await cartPage.verifyCartPageVisible();
     await cartPage.verifyProductQuantityInCart('4');
+  });
+
+  // Place Order: Register while Checkout
+  test('Place Order: Register while Checkout', async () => {
+    const homePage = pom.getHomePage();
+    const productsPage = pom.getProductsPage();
+    const cartPage = pom.getCartPage();
+    const checkoutPage = pom.getCheckoutPage();
+    const accountPage = pom.getAccountPage();
+    const checkoutDialog = pom.getCheckoutDialog();
+  
+    await homePage.clickProducts();
+    await productsPage.verifyAllProductsPageVisible();
+    await productsPage.addProductToCart(1);
+    await productsPage.clickContinueShoppingButton();
+    await productsPage.addProductToCart(2);
+    await productsPage.clickViewCartButton();
+
+    await cartPage.verifyCartPageVisible();
+    await cartPage.clickProceedToCheckout();
+  
+    await checkoutDialog.clickRegisterLoginLink();
+  
+    const { name, lastName, address1, city,  state, zipcode, country} = await registerNewUser(pom);
+  
+    await accountPage.verifyLoggedInAsUsernameVisible(name);
+  
+    await homePage.clickCart();
+    await cartPage.clickProceedToCheckout();
+  
+    // Verify Address Details and Review Your Order
+    const addressDetails = {
+      firstName: name,
+      lastName: lastName,
+      address1: address1,
+      city: city,
+      state: state,
+      zipcode: zipcode,
+      country: country,
+    };
+    await checkoutPage.verifyAddressDetails(addressDetails);
+    await checkoutPage.verifyReviewYourOrder();
+  
+    await checkoutPage.enterOrderComment('This is a test order.');
+    await checkoutPage.clickPlaceOrderButton();
+  
+    await checkoutPage.enterPaymentDetails(paymentDetails);
+    await checkoutPage.clickPayAndConfirmOrderButton();
+    await checkoutPage.verifyOrderSuccessMessage();
+    await deleteUserAccount(pom, name);
   });
 
 });
