@@ -6,6 +6,8 @@ import { ContactUsPage } from './pages/ContactUsPage';
 import { ProductsPage } from './pages/ProductsPage';
 import { ProductDetailsPage } from './pages/ProductDetailsPage';
 import { CartPage } from './pages/CartPage';
+import { CheckoutPage } from './pages/CheckoutPage';
+import { CheckoutDialog } from './pages/CheckoutDialog';
 
 /**
  * PageObjectManager class is responsible for managing and providing access 
@@ -21,6 +23,9 @@ export class PageObjectManager {
   private productsPage!: ProductsPage; // Instance of ProductsPage for interacting with the products page.
   private productDetailsPage!: ProductDetailsPage; // Instance of ProductDetailsPage for interacting with product details.
   private cartPage!: CartPage; // Instance of CartPage for interacting with the shopping cart page.
+  private checkoutPage!: CheckoutPage; // Instance of CheckoutPage for interacting with the check out page.
+  private checkoutDialog!: CheckoutDialog; // Instance of CheckoutDialog for interacting with the check out dialog.
+
 
   /**
    * Constructor to initialize the PageObjectManager with a Playwright Page object.
@@ -106,4 +111,25 @@ export class PageObjectManager {
     }
     return this.cartPage;
   }
+
+  /**
+   * Returns the CheckoutPage object, creating it if it doesn't already exist.
+   * * @returns {CheckoutPage} The CheckoutPage object.
+   */
+  getCheckoutPage(): CheckoutPage {
+    if (!this.checkoutPage) {
+      this.checkoutPage = new CheckoutPage(this.page);
+    }
+    return this.checkoutPage;
+  }
+
+  /**
+     * Returns the CheckoutDialog object, creating it if it doesn't already exist.
+     */
+  getCheckoutDialog(): CheckoutDialog {
+    if (!this.checkoutDialog) {
+        this.checkoutDialog = new CheckoutDialog(this.page);
+    }
+    return this.checkoutDialog;
+}
 }

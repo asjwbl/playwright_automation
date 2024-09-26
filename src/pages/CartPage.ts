@@ -58,5 +58,13 @@ export class CartPage extends BasePage {
     expect(quantity).toBe(expectedDetails.quantity);
     expect(total).toBe(expectedDetails.total);
   }
+
+  /**
+   * Clicks the 'Proceed to Checkout' button on the Cart page.
+   */
+  async clickProceedToCheckout() {
+    // Waits for and clicks the "Proceed to Checkout" button
+    await this.page.click('.btn.btn-default.check_out');
+  }
 }
 
