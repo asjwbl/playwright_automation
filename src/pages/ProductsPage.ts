@@ -69,20 +69,4 @@ export class ProductsPage extends BasePage {
     await this.page.hover(`(//div[@class='product-image-wrapper'])[${index}]`);
     await this.page.click(`(//div[@class='product-image-wrapper'])[${index}]//a[contains(text(), 'Add to cart')]`);
   }
-
-  /**
-   * Clicks the "Continue Shopping" button after adding a product to the cart.
-   */
-  async clickContinueShoppingButton() {
-    // Clicks the 'Continue Shopping' button to return to the product listing after adding a product to the cart.
-    await this.page.click('button:has-text("Continue Shopping")');
-  }
-
-  /**
-   * Clicks the "View Cart" button to navigate to the cart page.
-   */
-  async clickViewCartButton() {
-    // Clicks the 'View Cart' link in the navigation menu to navigate to the shopping cart page.
-    await this.page.click('a[href="/view_cart"]');
-  }
 }

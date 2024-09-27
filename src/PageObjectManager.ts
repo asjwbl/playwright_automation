@@ -8,6 +8,7 @@ import { ProductDetailsPage } from './pages/ProductDetailsPage';
 import { CartPage } from './pages/CartPage';
 import { CheckoutPage } from './pages/CheckoutPage';
 import { CheckoutDialog } from './pages/CheckoutDialog';
+import { ViewCartDialog } from './pages/ViewCartDialog';
 
 /**
  * PageObjectManager class is responsible for managing and providing access 
@@ -25,6 +26,7 @@ export class PageObjectManager {
   private cartPage!: CartPage; // Instance of CartPage for interacting with the shopping cart page.
   private checkoutPage!: CheckoutPage; // Instance of CheckoutPage for interacting with the check out page.
   private checkoutDialog!: CheckoutDialog; // Instance of CheckoutDialog for interacting with the check out dialog.
+  private viewCartDialog!: ViewCartDialog; // Instance of ViewCartDialog for interacting with the view cart dialog.
 
 
   /**
@@ -131,5 +133,15 @@ export class PageObjectManager {
         this.checkoutDialog = new CheckoutDialog(this.page);
     }
     return this.checkoutDialog;
+}
+
+/**
+     * Returns the ViewCartDialog object, creating it if it doesn't already exist.
+     */
+getViewCartDialog(): ViewCartDialog {
+  if (!this.viewCartDialog) {
+      this.viewCartDialog = new ViewCartDialog(this.page);
+  }
+  return this.viewCartDialog;
 }
 }
