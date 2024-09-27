@@ -199,6 +199,7 @@ test.describe('UI Test Cases', () => {
     const homePage = pom.getHomePage();
     const productsPage = pom.getProductsPage();
     const cartPage = pom.getCartPage();
+    const viewCartDialog = pom.getViewCartDialog();
 
     await homePage.clickProducts();
 
@@ -206,9 +207,9 @@ test.describe('UI Test Cases', () => {
     await productsPage.verifyProductsListVisible();
 
     await productsPage.addProductToCart(1);
-    await productsPage.clickContinueShoppingButton();
+    await viewCartDialog.clickContinueShoppingLink();
     await productsPage.addProductToCart(2);
-    await productsPage.clickViewCartButton();
+    await viewCartDialog.clickViewCartLink();
 
     await cartPage.verifyProductsInCart(2); // Ensure there are two products in the cart
     await cartPage.verifyProductDetailsInCart(1, products[0]);
@@ -236,15 +237,15 @@ test.describe('UI Test Cases', () => {
     const productsPage = pom.getProductsPage();
     const cartPage = pom.getCartPage();
     const checkoutPage = pom.getCheckoutPage();
-    const accountPage = pom.getAccountPage();
     const checkoutDialog = pom.getCheckoutDialog();
+    const viewCartDialog = pom.getViewCartDialog();
   
     await homePage.clickProducts();
     await productsPage.verifyAllProductsPageVisible();
     await productsPage.addProductToCart(1);
-    await productsPage.clickContinueShoppingButton();
+    await viewCartDialog.clickContinueShoppingLink();
     await productsPage.addProductToCart(2);
-    await productsPage.clickViewCartButton();
+    await viewCartDialog.clickViewCartLink();
 
     await cartPage.verifyCartPageVisible();
     await cartPage.clickProceedToCheckout();
@@ -253,7 +254,50 @@ test.describe('UI Test Cases', () => {
   
     const { name, lastName, address1, city,  state, zipcode, country} = await registerNewUser(pom);
   
-    await accountPage.verifyLoggedInAsUsernameVisible(name);
+    await homePage.clickCart();
+    await cartPage.clickProceedToCheckout();
+  
+    // Verify Address Details and Review Your Order
+    const addressDetails = {
+      firstName: name,
+      lastName: lastName,
+      address1: address1,
+      city: city,
+      state: state,
+      zipcode: zipcode,
+      country: country,
+    };
+    await checkoutPage.verifyAddressDetails(addressDetails);
+    await checkoutPage.verifyReviewYourOrder();
+  
+    await checkoutPage.enterOrderComment('This is a test order.');
+    await checkoutPage.clickPlaceOrderButton();
+  
+    await checkoutPage.enterPaymentDetails(paymentDetails);
+    await checkoutPage.clickPayAndConfirmOrderButton();
+    await checkoutPage.verifyOrderSuccessMessage();
+    await deleteUserAccount(pom, name);
+  });
+
+  // Place Order: Register before Checkout
+  test('Place Order: Register before Checkout', async () => {
+    const homePage = pom.getHomePage();
+    const productsPage = pom.getProductsPage();
+    const cartPage = pom.getCartPage();
+    const checkoutPage = pom.getCheckoutPage();
+    const viewCartDialog = pom.getViewCartDialog();
+  
+    const { name, lastName, address1, city,  state, zipcode, country} = await registerNewUser(pom);
+
+    await homePage.clickProducts();
+    await productsPage.verifyAllProductsPageVisible();
+    await productsPage.addProductToCart(1);
+    await viewCartDialog.clickContinueShoppingLink();
+    await productsPage.addProductToCart(2);
+    await viewCartDialog.clickViewCartLink();
+
+    await cartPage.verifyCartPageVisible();
+    await cartPage.clickProceedToCheckout();
   
     await homePage.clickCart();
     await cartPage.clickProceedToCheckout();
