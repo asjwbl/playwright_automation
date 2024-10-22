@@ -34,7 +34,10 @@ export class ContactUsPage extends BasePage {
   // Getter for the Subject Input field (cached)
   get subjectInput(): InputComponent {
     if (!this._subjectInput) {
-      this._subjectInput = new InputComponent(this.page, 'input[name="subject"]');
+      this._subjectInput = new InputComponent(
+        this.page,
+        'input[name="subject"]'
+      );
     }
     return this._subjectInput;
   }
@@ -42,7 +45,10 @@ export class ContactUsPage extends BasePage {
   // Getter for the Message TextArea (cached)
   get messageTextArea(): TextAreaComponent {
     if (!this._messageTextArea) {
-      this._messageTextArea = new TextAreaComponent(this.page, 'textarea[name="message"]');
+      this._messageTextArea = new TextAreaComponent(
+        this.page,
+        'textarea[name="message"]'
+      );
     }
     return this._messageTextArea;
   }
@@ -50,7 +56,10 @@ export class ContactUsPage extends BasePage {
   // Getter for the Submit Button (cached)
   get submitButton(): ButtonComponent {
     if (!this._submitButton) {
-      this._submitButton = new ButtonComponent(this.page, "input[value='Submit']");
+      this._submitButton = new ButtonComponent(
+        this.page,
+        "input[value='Submit']"
+      );
     }
     return this._submitButton;
   }
@@ -72,7 +81,7 @@ export class ContactUsPage extends BasePage {
 
   /**
    * Enters the user's name in the name input field.
-   * 
+   *
    * @param name - The user's name to be entered.
    */
   async enterName(name: string) {
@@ -81,7 +90,7 @@ export class ContactUsPage extends BasePage {
 
   /**
    * Enters the user's email address in the email input field.
-   * 
+   *
    * @param email - The user's email address to be entered.
    */
   async enterEmail(email: string) {
@@ -90,7 +99,7 @@ export class ContactUsPage extends BasePage {
 
   /**
    * Enters the subject of the message in the subject input field.
-   * 
+   *
    * @param subject - The subject of the message to be entered.
    */
   async enterSubject(subject: string) {
@@ -99,7 +108,7 @@ export class ContactUsPage extends BasePage {
 
   /**
    * Enters the message in the message textarea field.
-   * 
+   *
    * @param message - The message to be entered.
    */
   async enterMessage(message: string) {
@@ -108,7 +117,7 @@ export class ContactUsPage extends BasePage {
 
   /**
    * Uploads a file by setting the file input with the provided file path.
-   * 
+   *
    * @param relativeFilePath - The relative path to the file to be uploaded.
    */
   async uploadFile(relativeFilePath: string) {

@@ -14,7 +14,10 @@ export class CartPage extends BasePage {
    */
   get proceedToCheckoutButton(): ButtonComponent {
     if (!this.proceedToCheckoutButtonCached) {
-      this.proceedToCheckoutButtonCached = new ButtonComponent(this.page, '.btn.btn-default.check_out');
+      this.proceedToCheckoutButtonCached = new ButtonComponent(
+        this.page,
+        '.btn.btn-default.check_out'
+      );
     }
     return this.proceedToCheckoutButtonCached;
   }
@@ -23,7 +26,10 @@ export class CartPage extends BasePage {
    * Verifies that the shopping cart page is visible by checking for the "Shopping Cart" text.
    */
   async verifyCartPageVisible(): Promise<void> {
-    const cartPageLabel = new LabelComponent(this.page, 'li:has-text("Shopping Cart")');
+    const cartPageLabel = new LabelComponent(
+      this.page,
+      'li:has-text("Shopping Cart")'
+    );
     await cartPageLabel.isVisible();
   }
 
@@ -32,7 +38,10 @@ export class CartPage extends BasePage {
    * @param expectedQuantity - The expected quantity of the product in the cart.
    */
   async verifyProductQuantityInCart(expectedQuantity: string): Promise<void> {
-    const quantityLabel = new LabelComponent(this.page, '.cart_quantity button');
+    const quantityLabel = new LabelComponent(
+      this.page,
+      '.cart_quantity button'
+    );
     const quantity = await quantityLabel.getText();
     expect(quantity).toBe(expectedQuantity);
   }
@@ -49,7 +58,7 @@ export class CartPage extends BasePage {
   /**
    * Verifies the details of a specific product in the shopping cart by its index.
    * This includes checking the product's name, price, quantity, and total.
-   * 
+   *
    * @param index - The index of the product in the cart (1-based index).
    * @param expectedDetails - An object containing the expected details of the product:
    *    - `name`: The expected name of the product.
@@ -58,13 +67,27 @@ export class CartPage extends BasePage {
    *    - `total`: The expected total price for the product.
    */
   async verifyProductDetailsInCart(
-    index: number, 
-    expectedDetails: { name: string, price: string, quantity: string, total: string }
+    index: number,
+    expectedDetails: {
+      name: string;
+      price: string;
+      quantity: string;
+      total: string;
+    }
   ): Promise<void> {
     const nameLabel = new LabelComponent(this.page, `#product-${index} h4`);
-    const priceLabel = new LabelComponent(this.page, `#product-${index} .cart_price p`);
-    const quantityLabel = new LabelComponent(this.page, `#product-${index} .cart_quantity button`);
-    const totalLabel = new LabelComponent(this.page, `#product-${index} .cart_total_price`);
+    const priceLabel = new LabelComponent(
+      this.page,
+      `#product-${index} .cart_price p`
+    );
+    const quantityLabel = new LabelComponent(
+      this.page,
+      `#product-${index} .cart_quantity button`
+    );
+    const totalLabel = new LabelComponent(
+      this.page,
+      `#product-${index} .cart_total_price`
+    );
 
     const name = await nameLabel.getText();
     const price = await priceLabel.getText();

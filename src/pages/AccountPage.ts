@@ -15,7 +15,10 @@ export class AccountPage extends BasePage {
    */
   get loggedInLabel(): LabelComponent {
     if (!this.loggedInLabelCached) {
-      this.loggedInLabelCached = new LabelComponent(this.page, `a:has-text("Logged in as ")`);
+      this.loggedInLabelCached = new LabelComponent(
+        this.page,
+        `a:has-text("Logged in as ")`
+      );
     }
     return this.loggedInLabelCached;
   }
@@ -25,7 +28,10 @@ export class AccountPage extends BasePage {
    */
   get deleteAccountButton(): ButtonComponent {
     if (!this.deleteAccountButtonCached) {
-      this.deleteAccountButtonCached = new ButtonComponent(this.page, 'a:has-text("Delete Account")');
+      this.deleteAccountButtonCached = new ButtonComponent(
+        this.page,
+        'a:has-text("Delete Account")'
+      );
     }
     return this.deleteAccountButtonCached;
   }
@@ -35,19 +41,25 @@ export class AccountPage extends BasePage {
    */
   get accountDeletedLabel(): LabelComponent {
     if (!this.accountDeletedLabelCached) {
-      this.accountDeletedLabelCached = new LabelComponent(this.page, 'h2:has-text("Account Deleted!")');
+      this.accountDeletedLabelCached = new LabelComponent(
+        this.page,
+        'h2:has-text("Account Deleted!")'
+      );
     }
     return this.accountDeletedLabelCached;
   }
 
   /**
    * Verifies that the "Logged in as [username]" text is visible on the account page.
-   * 
+   *
    * @param username - The username of the logged-in user to verify.
    */
   async verifyLoggedInAsUsernameVisible(username: string): Promise<void> {
     // Creates a dynamic label for the specific username and waits for visibility
-    const dynamicLoggedInLabel = new LabelComponent(this.page, `a:has-text("Logged in as ${username}")`);
+    const dynamicLoggedInLabel = new LabelComponent(
+      this.page,
+      `a:has-text("Logged in as ${username}")`
+    );
     await dynamicLoggedInLabel.isVisible();
   }
 
