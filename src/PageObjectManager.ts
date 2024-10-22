@@ -11,8 +11,8 @@ import { CheckoutDialog } from './pages/CheckoutDialog';
 import { ViewCartDialog } from './pages/ViewCartDialog';
 
 /**
- * PageObjectManager class is responsible for managing and providing access 
- * to different page objects. It ensures that only one instance of each page object 
+ * PageObjectManager class is responsible for managing and providing access
+ * to different page objects. It ensures that only one instance of each page object
  * is created and reused throughout the test execution.
  */
 export class PageObjectManager {
@@ -27,7 +27,6 @@ export class PageObjectManager {
   private checkoutPage!: CheckoutPage; // Instance of CheckoutPage for interacting with the check out page.
   private checkoutDialog!: CheckoutDialog; // Instance of CheckoutDialog for interacting with the check out dialog.
   private viewCartDialog!: ViewCartDialog; // Instance of ViewCartDialog for interacting with the view cart dialog.
-
 
   /**
    * Constructor to initialize the PageObjectManager with a Playwright Page object.
@@ -126,22 +125,22 @@ export class PageObjectManager {
   }
 
   /**
-     * Returns the CheckoutDialog object, creating it if it doesn't already exist.
-     */
+   * Returns the CheckoutDialog object, creating it if it doesn't already exist.
+   */
   getCheckoutDialog(): CheckoutDialog {
     if (!this.checkoutDialog) {
-        this.checkoutDialog = new CheckoutDialog(this.page);
+      this.checkoutDialog = new CheckoutDialog(this.page);
     }
     return this.checkoutDialog;
-}
-
-/**
-     * Returns the ViewCartDialog object, creating it if it doesn't already exist.
-     */
-getViewCartDialog(): ViewCartDialog {
-  if (!this.viewCartDialog) {
-      this.viewCartDialog = new ViewCartDialog(this.page);
   }
-  return this.viewCartDialog;
-}
+
+  /**
+   * Returns the ViewCartDialog object, creating it if it doesn't already exist.
+   */
+  getViewCartDialog(): ViewCartDialog {
+    if (!this.viewCartDialog) {
+      this.viewCartDialog = new ViewCartDialog(this.page);
+    }
+    return this.viewCartDialog;
+  }
 }

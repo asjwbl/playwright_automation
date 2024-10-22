@@ -16,7 +16,10 @@ export class SignUpPage extends BasePage {
   // Getter for "Sign Up" button (cached)
   get signUpButton(): ButtonComponent {
     if (!this._signUpButton) {
-      this._signUpButton = new ButtonComponent(this.page, 'button[data-qa="signup-button"]');
+      this._signUpButton = new ButtonComponent(
+        this.page,
+        'button[data-qa="signup-button"]'
+      );
     }
     return this._signUpButton;
   }
@@ -24,7 +27,10 @@ export class SignUpPage extends BasePage {
   // Getter for "Create Account" button (cached)
   get createAccountButton(): ButtonComponent {
     if (!this._createAccountButton) {
-      this._createAccountButton = new ButtonComponent(this.page, 'button[data-qa="create-account"]');
+      this._createAccountButton = new ButtonComponent(
+        this.page,
+        'button[data-qa="create-account"]'
+      );
     }
     return this._createAccountButton;
   }
@@ -32,7 +38,10 @@ export class SignUpPage extends BasePage {
   // Getter for "Continue" button (cached)
   get continueButton(): ButtonComponent {
     if (!this._continueButton) {
-      this._continueButton = new ButtonComponent(this.page, 'a[data-qa="continue-button"]');
+      this._continueButton = new ButtonComponent(
+        this.page,
+        'a[data-qa="continue-button"]'
+      );
     }
     return this._continueButton;
   }
@@ -40,7 +49,10 @@ export class SignUpPage extends BasePage {
   // Getter for "Newsletter" checkbox (cached)
   get newsletterCheckbox(): CheckboxComponent {
     if (!this._newsletterCheckbox) {
-      this._newsletterCheckbox = new CheckboxComponent(this.page, 'input#newsletter');
+      this._newsletterCheckbox = new CheckboxComponent(
+        this.page,
+        'input#newsletter'
+      );
     }
     return this._newsletterCheckbox;
   }
@@ -56,14 +68,17 @@ export class SignUpPage extends BasePage {
   // Getter for "Login" button (cached)
   get loginButton(): ButtonComponent {
     if (!this._loginButton) {
-      this._loginButton = new ButtonComponent(this.page, 'button[data-qa="login-button"]');
+      this._loginButton = new ButtonComponent(
+        this.page,
+        'button[data-qa="login-button"]'
+      );
     }
     return this._loginButton;
   }
 
   /**
    * Fills in the name and email fields for signing up a new user.
-   * 
+   *
    * @param name - The name of the user to sign up.
    * @param email - The email address of the user to sign up.
    */
@@ -95,7 +110,7 @@ export class SignUpPage extends BasePage {
 
   /**
    * Fills in the detailed account information for the user during registration.
-   * 
+   *
    * @param details - An object containing the account information to fill in the form.
    */
   async fillAccountInformation(details: {
@@ -170,7 +185,7 @@ export class SignUpPage extends BasePage {
 
   /**
    * Logs in a user by entering the email and password and clicking the login button.
-   * 
+   *
    * @param username - The email address of the user to log in.
    * @param password - The password of the user to log in.
    */
@@ -191,6 +206,8 @@ export class SignUpPage extends BasePage {
    * Verifies that the login has failed by checking for the error message.
    */
   async verifyLoginFailed() {
-    await this.page.waitForSelector('p:has-text("Your email or password is incorrect!")');
+    await this.page.waitForSelector(
+      'p:has-text("Your email or password is incorrect!")'
+    );
   }
 }

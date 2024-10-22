@@ -6,7 +6,6 @@ import path from 'path';
 import { paymentDetails, products } from '../../src/test_data/testData';
 
 test.describe('UI Test Cases', () => {
-
   let browser: Browser | null = null;
   let page: Page;
   let pom: PageObjectManager;
@@ -26,7 +25,7 @@ test.describe('UI Test Cases', () => {
     } catch (error) {
       console.error('Failed to launch browser or setup initial page:', error);
       // Properly handle the error, possibly by skipping further tests if necessary
-      test.skip();  // This will skip all tests in the suite if setup fails
+      test.skip(); // This will skip all tests in the suite if setup fails
     }
   });
 
@@ -37,7 +36,6 @@ test.describe('UI Test Cases', () => {
       await browser.close();
     }
   });
-
 
   // Register a new user test case
   test('should register a new user', async () => {
@@ -74,7 +72,7 @@ test.describe('UI Test Cases', () => {
   test('Login with invalid credentials', async () => {
     const homePage = pom.getHomePage();
     const signUpPage = pom.getSignUpPage();
-    
+
     await homePage.clickSignIn();
     await signUpPage.login('invalid@example.com', 'invalidpassword');
     await signUpPage.verifyLoginFailed();
@@ -97,8 +95,13 @@ test.describe('UI Test Cases', () => {
     await signUpPage.clickSignupButton();
 
     // Verify the error message
-    const errorMessage = await page.locator('p:has-text("Email Address already exist!")');
-    await expect(errorMessage, 'Expected error message when registering with an existing email').toBeVisible();
+    const errorMessage = await page.locator(
+      'p:has-text("Email Address already exist!")'
+    );
+    await expect(
+      errorMessage,
+      'Expected error message when registering with an existing email'
+    ).toBeVisible();
   });
 
   // Submit Contact Us form test case
@@ -118,7 +121,7 @@ test.describe('UI Test Cases', () => {
     await contactUsPage.uploadFile(filePath);
 
     // Set up dialog handler before clicking submit
-    page.on('dialog', async dialog => {
+    page.on('dialog', async (dialog) => {
       await dialog.accept();
     });
 
@@ -134,7 +137,9 @@ test.describe('UI Test Cases', () => {
     await homePage.clickTestCases();
 
     const testCasesPageTitle = await page.title();
-    expect(testCasesPageTitle).toBe('Automation Practice Website for UI Testing - Test Cases');
+    expect(testCasesPageTitle).toBe(
+      'Automation Practice Website for UI Testing - Test Cases'
+    );
   });
 
   // Navigate to All Products page and verify details
@@ -153,12 +158,30 @@ test.describe('UI Test Cases', () => {
     const productDetails = await productDetailsPage.verifyProductDetails();
 
     // Assert that each product detail field is populated
-    expect(productDetails.productName, 'Expected product name to be populated').toBeTruthy();
-    expect(productDetails.category, 'Expected product category to be populated').toBeTruthy();
-    expect(productDetails.price, 'Expected product price to be populated').toBeTruthy();
-    expect(productDetails.availability, 'Expected product availability to be populated').toBeTruthy();
-    expect(productDetails.condition, 'Expected product condition to be populated').toBeTruthy();
-    expect(productDetails.brand, 'Expected product brand to be populated').toBeTruthy();
+    expect(
+      productDetails.productName,
+      'Expected product name to be populated'
+    ).toBeTruthy();
+    expect(
+      productDetails.category,
+      'Expected product category to be populated'
+    ).toBeTruthy();
+    expect(
+      productDetails.price,
+      'Expected product price to be populated'
+    ).toBeTruthy();
+    expect(
+      productDetails.availability,
+      'Expected product availability to be populated'
+    ).toBeTruthy();
+    expect(
+      productDetails.condition,
+      'Expected product condition to be populated'
+    ).toBeTruthy();
+    expect(
+      productDetails.brand,
+      'Expected product brand to be populated'
+    ).toBeTruthy();
   });
 
   // Search for a product and verify search results
@@ -245,7 +268,7 @@ test.describe('UI Test Cases', () => {
     const checkoutPage = pom.getCheckoutPage();
     const checkoutDialog = pom.getCheckoutDialog();
     const viewCartDialog = pom.getViewCartDialog();
-  
+
     await homePage.clickProducts();
     await productsPage.verifyAllProductsPageVisible();
     await productsPage.addProductToCart(1);
@@ -255,14 +278,15 @@ test.describe('UI Test Cases', () => {
 
     await cartPage.verifyCartPageVisible();
     await cartPage.clickProceedToCheckout();
-  
+
     await checkoutDialog.clickRegisterLoginLink();
-  
-    const { firstName, lastName, address1, city,  state, zipcode, country} = await registerNewUser(pom);
-  
+
+    const { firstName, lastName, address1, city, state, zipcode, country } =
+      await registerNewUser(pom);
+
     await homePage.clickCart();
     await cartPage.clickProceedToCheckout();
-  
+
     // Verify Address Details and Review Your Order
     const addressDetails = {
       firstName: firstName,
@@ -275,10 +299,10 @@ test.describe('UI Test Cases', () => {
     };
     await checkoutPage.verifyAddressDetails(addressDetails);
     await checkoutPage.verifyReviewYourOrder();
-  
+
     await checkoutPage.enterOrderComment('This is a test order.');
     await checkoutPage.clickPlaceOrderButton();
-  
+
     await checkoutPage.enterPaymentDetails(paymentDetails);
     await checkoutPage.clickPayAndConfirmOrderButton();
     await checkoutPage.verifyOrderSuccessMessage();
@@ -292,8 +316,9 @@ test.describe('UI Test Cases', () => {
     const cartPage = pom.getCartPage();
     const checkoutPage = pom.getCheckoutPage();
     const viewCartDialog = pom.getViewCartDialog();
-  
-    const { firstName, lastName, address1, city,  state, zipcode, country} = await registerNewUser(pom);
+
+    const { firstName, lastName, address1, city, state, zipcode, country } =
+      await registerNewUser(pom);
 
     await homePage.clickProducts();
     await productsPage.verifyAllProductsPageVisible();
@@ -304,10 +329,10 @@ test.describe('UI Test Cases', () => {
 
     await cartPage.verifyCartPageVisible();
     await cartPage.clickProceedToCheckout();
-  
+
     await homePage.clickCart();
     await cartPage.clickProceedToCheckout();
-  
+
     // Verify Address Details and Review Your Order
     const addressDetails = {
       firstName: firstName,
@@ -320,14 +345,13 @@ test.describe('UI Test Cases', () => {
     };
     await checkoutPage.verifyAddressDetails(addressDetails);
     await checkoutPage.verifyReviewYourOrder();
-  
+
     await checkoutPage.enterOrderComment('This is a test order.');
     await checkoutPage.clickPlaceOrderButton();
-  
+
     await checkoutPage.enterPaymentDetails(paymentDetails);
     await checkoutPage.clickPayAndConfirmOrderButton();
     await checkoutPage.verifyOrderSuccessMessage();
     await deleteUserAccount(pom, firstName);
   });
-
 });

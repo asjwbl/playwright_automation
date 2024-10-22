@@ -4,12 +4,15 @@ import { faker } from '@faker-js/faker';
 /**
  * Creates a new user by navigating through the sign-up process, filling in
  * details, and verifying account creation.
- * 
+ *
  * @param pom - The PageObjectManager instance used to interact with various pages.
  * @param defaultUserDetails - Optional user details. If not provided, random data will be generated.
  * @returns An object containing the user's essential details like email, password, name, etc.
  */
-export async function registerNewUser(pom: PageObjectManager, defaultUserDetails?: any) {
+export async function registerNewUser(
+  pom: PageObjectManager,
+  defaultUserDetails?: any
+) {
   const homePage = pom.getHomePage();
   const signUpPage = pom.getSignUpPage();
   const accountPage = pom.getAccountPage();
@@ -31,7 +34,7 @@ export async function registerNewUser(pom: PageObjectManager, defaultUserDetails
     state: faker.location.state(),
     city: faker.location.city(),
     zipcode: faker.location.zipCode(),
-    mobileNumber: faker.phone.number()
+    mobileNumber: faker.phone.number(),
   };
 
   // Step 1: Navigate to the sign-in page and initiate the sign-up process
@@ -61,13 +64,13 @@ export async function registerNewUser(pom: PageObjectManager, defaultUserDetails
 /**
  * Deletes the user account by clicking the delete account button and verifying
  * that the account was deleted.
- * 
+ *
  * @param pom - The PageObjectManager instance used to interact with various pages.
  * @param name - The username of the account to delete.
  */
 export async function deleteUserAccount(pom: PageObjectManager, name: string) {
   const accountPage = pom.getAccountPage();
-  
+
   // Verify that the correct user is logged in
   await accountPage.verifyLoggedInAsUsernameVisible(name);
 
@@ -80,7 +83,7 @@ export async function deleteUserAccount(pom: PageObjectManager, name: string) {
 
 /**
  * Logs out the user from the application.
- * 
+ *
  * @param pom - The PageObjectManager instance used to interact with various pages.
  * @param name - The username of the account to log out.
  */

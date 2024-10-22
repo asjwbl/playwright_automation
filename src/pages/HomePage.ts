@@ -34,7 +34,10 @@ export class HomePage extends BasePage {
   // Getter for Contact Us Link (cached)
   get contactUsLink(): ButtonComponent {
     if (!this._contactUsLink) {
-      this._contactUsLink = new ButtonComponent(this.page, 'a[href="/contact_us"]');
+      this._contactUsLink = new ButtonComponent(
+        this.page,
+        'a[href="/contact_us"]'
+      );
     }
     return this._contactUsLink;
   }
@@ -50,7 +53,10 @@ export class HomePage extends BasePage {
   // Getter for Test Cases Button (cached)
   get testCasesButton(): ButtonComponent {
     if (!this._testCasesButton) {
-      this._testCasesButton = new ButtonComponent(this.page, "//a[contains(text(),'Test Cases')]");
+      this._testCasesButton = new ButtonComponent(
+        this.page,
+        "//a[contains(text(),'Test Cases')]"
+      );
     }
     return this._testCasesButton;
   }
@@ -58,7 +64,9 @@ export class HomePage extends BasePage {
   // Getter for Products Button (cached)
   get productsButton(): ButtonComponent {
     if (!this._productsButton) {
-      this._productsButton = ButtonComponent.byRole(this.page, 'link', { name: ' Products' });
+      this._productsButton = ButtonComponent.byRole(this.page, 'link', {
+        name: ' Products',
+      });
     }
     return this._productsButton;
   }
@@ -66,7 +74,10 @@ export class HomePage extends BasePage {
   // Getter for Subscription Email Input (cached)
   get subscriptionEmailInput(): InputComponent {
     if (!this._subscriptionEmailInput) {
-      this._subscriptionEmailInput = new InputComponent(this.page, '#susbscribe_email');
+      this._subscriptionEmailInput = new InputComponent(
+        this.page,
+        '#susbscribe_email'
+      );
     }
     return this._subscriptionEmailInput;
   }
@@ -90,7 +101,9 @@ export class HomePage extends BasePage {
    * Verifies that the homepage has loaded successfully by checking for a specific element.
    */
   async verifyHomePageLoaded() {
-    await this.page.waitForSelector('h2:has-text("Full-Fledged practice website for Automation Engineers")');
+    await this.page.waitForSelector(
+      'h2:has-text("Full-Fledged practice website for Automation Engineers")'
+    );
   }
 
   /**
@@ -132,7 +145,9 @@ export class HomePage extends BasePage {
    * Scrolls down to the footer to interact with footer elements (like subscription).
    */
   async scrollToFooter() {
-    await this.page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
+    await this.page.evaluate(() =>
+      window.scrollTo(0, document.body.scrollHeight)
+    );
   }
 
   /**
@@ -161,6 +176,8 @@ export class HomePage extends BasePage {
    * Verifies that the subscription was successful by checking for a confirmation message.
    */
   async verifySubscriptionSuccessMessage() {
-    await this.page.waitForSelector('div:has-text("You have been successfully subscribed!")');
+    await this.page.waitForSelector(
+      'div:has-text("You have been successfully subscribed!")'
+    );
   }
 }

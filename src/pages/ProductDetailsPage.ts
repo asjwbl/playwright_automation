@@ -12,17 +12,26 @@ export class ProductDetailsPage extends BasePage {
 
   // Getter for "Add to Cart" button (cached)
   get addToCartButton(): ButtonComponent {
-    return this._addToCartButton ??= new ButtonComponent(this.page, 'button:has-text("Add to cart")');
+    return (this._addToCartButton ??= new ButtonComponent(
+      this.page,
+      'button:has-text("Add to cart")'
+    ));
   }
 
   // Getter for "View Cart" button (cached)
   get viewCartButton(): ButtonComponent {
-    return this._viewCartButton ??= new ButtonComponent(this.page, 'u:has-text("View Cart")');
+    return (this._viewCartButton ??= new ButtonComponent(
+      this.page,
+      'u:has-text("View Cart")'
+    ));
   }
 
   // Getter for quantity input field (cached)
   get quantityInput(): InputComponent {
-    return this._quantityInput ??= new InputComponent(this.page, 'input[name="quantity"]');
+    return (this._quantityInput ??= new InputComponent(
+      this.page,
+      'input[name="quantity"]'
+    ));
   }
 
   /**
@@ -34,7 +43,7 @@ export class ProductDetailsPage extends BasePage {
 
   /**
    * Sets the quantity of the product before adding it to the cart.
-   * 
+   *
    * @param quantity - The desired quantity of the product to add to the cart.
    */
   async setProductQuantity(quantity: number) {
@@ -57,7 +66,7 @@ export class ProductDetailsPage extends BasePage {
 
   /**
    * Verifies and retrieves details of a product from the product details page.
-   * 
+   *
    * @returns An object containing the product details, including:
    * - `productName`: The name of the product.
    * - `category`: The category to which the product belongs.
@@ -67,12 +76,30 @@ export class ProductDetailsPage extends BasePage {
    * - `brand`: The brand of the product.
    */
   async verifyProductDetails() {
-    const productName = await this.page.$eval('.product-information h2', el => el.textContent);
-    const category = await this.page.$eval('.product-information p:has-text("Category:")', el => el.textContent);
-    const price = await this.page.$eval('.product-information span:has-text("Rs.")', el => el.textContent);
-    const availability = await this.page.$eval('.product-information p:has-text("Availability:")', el => el.textContent);
-    const condition = await this.page.$eval('.product-information p:has-text("Condition:")', el => el.textContent);
-    const brand = await this.page.$eval('.product-information p:has-text("Brand:")', el => el.textContent);
+    const productName = await this.page.$eval(
+      '.product-information h2',
+      (el) => el.textContent
+    );
+    const category = await this.page.$eval(
+      '.product-information p:has-text("Category:")',
+      (el) => el.textContent
+    );
+    const price = await this.page.$eval(
+      '.product-information span:has-text("Rs.")',
+      (el) => el.textContent
+    );
+    const availability = await this.page.$eval(
+      '.product-information p:has-text("Availability:")',
+      (el) => el.textContent
+    );
+    const condition = await this.page.$eval(
+      '.product-information p:has-text("Condition:")',
+      (el) => el.textContent
+    );
+    const brand = await this.page.$eval(
+      '.product-information p:has-text("Brand:")',
+      (el) => el.textContent
+    );
 
     return {
       productName,
@@ -80,7 +107,7 @@ export class ProductDetailsPage extends BasePage {
       price,
       availability,
       condition,
-      brand
+      brand,
     };
   }
 }
