@@ -24,6 +24,6 @@
   },
   "dependencies": {
     "@playwright/test": "^1.45.3",
-    "playwright": "^1.45.3"
+    "playwright": "^1.48.1"
   }
 }

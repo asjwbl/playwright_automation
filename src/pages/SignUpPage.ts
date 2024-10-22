@@ -1,9 +1,65 @@
 import { BasePage } from './BasePage';
+import { ButtonComponent } from '../components/basic_components/Button';
+import { CheckboxComponent } from '../components/basic_components/Checkbox';
 
 /**
  * Class to handle interactions on the sign-up and login pages.
  */
 export class SignUpPage extends BasePage {
+  private _signUpButton: ButtonComponent | null = null;
+  private _createAccountButton: ButtonComponent | null = null;
+  private _continueButton: ButtonComponent | null = null;
+  private _newsletterCheckbox: CheckboxComponent | null = null;
+  private _optinCheckbox: CheckboxComponent | null = null;
+  private _loginButton: ButtonComponent | null = null;
+
+  // Getter for "Sign Up" button (cached)
+  get signUpButton(): ButtonComponent {
+    if (!this._signUpButton) {
+      this._signUpButton = new ButtonComponent(this.page, 'button[data-qa="signup-button"]');
+    }
+    return this._signUpButton;
+  }
+
+  // Getter for "Create Account" button (cached)
+  get createAccountButton(): ButtonComponent {
+    if (!this._createAccountButton) {
+      this._createAccountButton = new ButtonComponent(this.page, 'button[data-qa="create-account"]');
+    }
+    return this._createAccountButton;
+  }
+
+  // Getter for "Continue" button (cached)
+  get continueButton(): ButtonComponent {
+    if (!this._continueButton) {
+      this._continueButton = new ButtonComponent(this.page, 'a[data-qa="continue-button"]');
+    }
+    return this._continueButton;
+  }
+
+  // Getter for "Newsletter" checkbox (cached)
+  get newsletterCheckbox(): CheckboxComponent {
+    if (!this._newsletterCheckbox) {
+      this._newsletterCheckbox = new CheckboxComponent(this.page, 'input#newsletter');
+    }
+    return this._newsletterCheckbox;
+  }
+
+  // Getter for "Optin" checkbox (cached)
+  get optinCheckbox(): CheckboxComponent {
+    if (!this._optinCheckbox) {
+      this._optinCheckbox = new CheckboxComponent(this.page, 'input#optin');
+    }
+    return this._optinCheckbox;
+  }
+
+  // Getter for "Login" button (cached)
+  get loginButton(): ButtonComponent {
+    if (!this._loginButton) {
+      this._loginButton = new ButtonComponent(this.page, 'button[data-qa="login-button"]');
+    }
+    return this._loginButton;
+  }
 
   /**
    * Fills in the name and email fields for signing up a new user.
@@ -12,7 +68,6 @@ export class SignUpPage extends BasePage {
    * @param email - The email address of the user to sign up.
    */
   async enterNameAndEmail(name: string, email: string) {
-    // Fills the "Name" and "Email" input fields for the sign-up form.
     await this.page.fill('input[data-qa="signup-name"]', name);
     await this.page.fill('input[data-qa="signup-email"]', email);
   }
@@ -21,15 +76,13 @@ export class SignUpPage extends BasePage {
    * Clicks the "Sign Up" button to proceed with the registration.
    */
   async clickSignupButton() {
-    // Clicks the "Sign Up" button to submit the sign-up form.
-    await this.page.click('button[data-qa="signup-button"]');
+    await this.signUpButton.click();
   }
 
   /**
    * Verifies that the "New User Signup!" text is visible on the sign-up page.
    */
   async verifyNewUserSignupVisible() {
-    // Waits for the "New User Signup!" text to be visible, confirming the page has loaded.
     await this.page.waitForSelector('h2:has-text("New User Signup!")');
   }
 
@@ -37,7 +90,6 @@ export class SignUpPage extends BasePage {
    * Verifies that the "Enter Account Information" text is visible after signing up.
    */
   async verifyEnterAccountInformationVisible() {
-    // Waits for the "Enter Account Information" section to appear after the sign-up form is submitted.
     await this.page.waitForSelector('h2:has-text("Enter Account Information")');
   }
 
@@ -65,14 +117,14 @@ export class SignUpPage extends BasePage {
     zipcode: string;
     mobileNumber: string;
   }) {
-    // Selects the title ("Mr" or "Mrs") based on the user's input.
+    // Select gender based on title
     if (details.title === 'Mr') {
       await this.page.click('input#id_gender1');
     } else {
       await this.page.click('input#id_gender2');
     }
 
-    // Fills in the rest of the account details form.
+    // Fill in all other fields
     await this.page.fill('input#password', details.password);
     await this.page.selectOption('select#days', details.birthDay);
     await this.page.selectOption('select#months', details.birthMonth);
@@ -87,25 +139,23 @@ export class SignUpPage extends BasePage {
     await this.page.fill('input#city', details.city);
     await this.page.fill('input#zipcode', details.zipcode);
     await this.page.fill('input#mobile_number', details.mobileNumber);
-    
-    // Checks the newsletter and opt-in checkboxes.
-    await this.page.check('input#newsletter');
-    await this.page.check('input#optin');
+
+    // Opt-in for newsletters and offers
+    await this.newsletterCheckbox.check();
+    await this.optinCheckbox.check();
   }
 
   /**
    * Clicks the "Create Account" button to submit the account creation form.
    */
   async clickCreateAccountButton() {
-    // Clicks the "Create Account" button to finalize the registration process.
-    await this.page.click('button[data-qa="create-account"]');
+    await this.createAccountButton.click();
   }
 
   /**
    * Verifies that the "Account Created!" message is visible after successfully creating an account.
    */
   async verifyAccountCreatedVisible() {
-    // Waits for the "Account Created!" message to confirm account creation was successful.
     await this.page.waitForSelector('h2:has-text("Account Created!")');
   }
 
@@ -113,8 +163,7 @@ export class SignUpPage extends BasePage {
    * Clicks the "Continue" button after account creation to proceed.
    */
   async clickContinueButton() {
-    // Clicks the "Continue" button to proceed after account creation.
-    await this.page.click('a[data-qa="continue-button"]');
+    await this.continueButton.click();
   }
 
   // Login methods
@@ -126,17 +175,15 @@ export class SignUpPage extends BasePage {
    * @param password - The password of the user to log in.
    */
   async login(username: string, password: string) {
-    // Fills in the email and password fields and clicks the "Login" button.
     await this.page.fill('input[data-qa="login-email"]', username);
     await this.page.fill('input[data-qa="login-password"]', password);
-    await this.page.click('button[data-qa="login-button"]');
+    await this.loginButton.click();
   }
 
   /**
    * Verifies that the "Login to your account" text is visible on the login page.
    */
   async verifyLoginToYourAccountVisible() {
-    // Waits for the "Login to your account" text to appear, confirming the login page has loaded.
     await this.page.waitForSelector('h2:has-text("Login to your account")');
   }
 
@@ -144,7 +191,6 @@ export class SignUpPage extends BasePage {
    * Verifies that the login has failed by checking for the error message.
    */
   async verifyLoginFailed() {
-    // Waits for the error message indicating that the email or password is incorrect.
     await this.page.waitForSelector('p:has-text("Your email or password is incorrect!")');
   }
 }

@@ -1,26 +1,39 @@
-import { expect } from 'playwright/test';
+import { expect } from '@playwright/test';
 import { BasePage } from './BasePage';
+import { ButtonComponent } from '../components/basic_components/Button';
+import { LabelComponent } from '../components/basic_components/Label';
 
 /**
  * Class to handle interactions and verifications on the shopping cart page.
  */
 export class CartPage extends BasePage {
+  private proceedToCheckoutButtonCached: ButtonComponent | null = null;
+
+  /**
+   * Getter for "Proceed to Checkout" button (cached for reuse).
+   */
+  get proceedToCheckoutButton(): ButtonComponent {
+    if (!this.proceedToCheckoutButtonCached) {
+      this.proceedToCheckoutButtonCached = new ButtonComponent(this.page, '.btn.btn-default.check_out');
+    }
+    return this.proceedToCheckoutButtonCached;
+  }
 
   /**
    * Verifies that the shopping cart page is visible by checking for the "Shopping Cart" text.
    */
-  async verifyCartPageVisible() {
-    // Waits for the "Shopping Cart" text to be visible in the cart page's list item.
-    await this.page.waitForSelector('li:has-text("Shopping Cart")');
+  async verifyCartPageVisible(): Promise<void> {
+    const cartPageLabel = new LabelComponent(this.page, 'li:has-text("Shopping Cart")');
+    await cartPageLabel.isVisible();
   }
 
   /**
    * Verifies the quantity of a product in the shopping cart.
    * @param expectedQuantity - The expected quantity of the product in the cart.
    */
-  async verifyProductQuantityInCart(expectedQuantity: string) {
-    // Retrieves the quantity text of the product in the cart and compares it with the expected value.
-    const quantity = await this.page.$eval('.cart_quantity button', el => el.textContent);
+  async verifyProductQuantityInCart(expectedQuantity: string): Promise<void> {
+    const quantityLabel = new LabelComponent(this.page, '.cart_quantity button');
+    const quantity = await quantityLabel.getText();
     expect(quantity).toBe(expectedQuantity);
   }
 
@@ -28,8 +41,7 @@ export class CartPage extends BasePage {
    * Verifies the number of products in the cart.
    * @param productCounts - The expected number of products in the shopping cart.
    */
-  async verifyProductsInCart(productCounts: number) {
-    // Retrieves the list of products in the cart and ensures the number matches the expected count.
+  async verifyProductsInCart(productCounts: number): Promise<void> {
     const productRows = await this.page.$$('.cart_info .cart_description');
     expect(productRows.length).toBe(productCounts);
   }
@@ -45,12 +57,19 @@ export class CartPage extends BasePage {
    *    - `quantity`: The expected quantity of the product.
    *    - `total`: The expected total price for the product.
    */
-  async verifyProductDetailsInCart(index: number, expectedDetails: { name: string, price: string, quantity: string, total: string }) {
-    // Retrieves and verifies the product name, price, quantity, and total cost for the product at the specified index.
-    const name = await this.page.$eval(`#product-${index} h4`, el => el.textContent);
-    const price = await this.page.$eval(`#product-${index} .cart_price p`, el => el.textContent);
-    const quantity = await this.page.$eval(`#product-${index} .cart_quantity button`, el => el.textContent);
-    const total = await this.page.$eval(`#product-${index} .cart_total_price`, el => el.textContent);
+  async verifyProductDetailsInCart(
+    index: number, 
+    expectedDetails: { name: string, price: string, quantity: string, total: string }
+  ): Promise<void> {
+    const nameLabel = new LabelComponent(this.page, `#product-${index} h4`);
+    const priceLabel = new LabelComponent(this.page, `#product-${index} .cart_price p`);
+    const quantityLabel = new LabelComponent(this.page, `#product-${index} .cart_quantity button`);
+    const totalLabel = new LabelComponent(this.page, `#product-${index} .cart_total_price`);
+
+    const name = await nameLabel.getText();
+    const price = await priceLabel.getText();
+    const quantity = await quantityLabel.getText();
+    const total = await totalLabel.getText();
 
     // Verifies that the retrieved product details match the expected values.
     expect(name).toContain(expectedDetails.name);
@@ -62,9 +81,7 @@ export class CartPage extends BasePage {
   /**
    * Clicks the 'Proceed to Checkout' button on the Cart page.
    */
-  async clickProceedToCheckout() {
-    // Waits for and clicks the "Proceed to Checkout" button
-    await this.page.click('.btn.btn-default.check_out');
+  async clickProceedToCheckout(): Promise<void> {
+    await this.proceedToCheckoutButton.click();
   }
 }
-

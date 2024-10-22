@@ -7,14 +7,14 @@ import { faker } from '@faker-js/faker';
  * 
  * @param pom - The PageObjectManager instance used to interact with various pages.
  * @param defaultUserDetails - Optional user details. If not provided, random data will be generated.
- * @returns An object containing the user's email, password, and name.
+ * @returns An object containing the user's essential details like email, password, name, etc.
  */
 export async function registerNewUser(pom: PageObjectManager, defaultUserDetails?: any) {
   const homePage = pom.getHomePage();
   const signUpPage = pom.getSignUpPage();
   const accountPage = pom.getAccountPage();
 
-  // Use provided details or generate random data
+  // Generate random details if not provided
   const userDetails = defaultUserDetails || {
     title: 'Mr',
     firstName: faker.person.firstName(),
@@ -34,35 +34,27 @@ export async function registerNewUser(pom: PageObjectManager, defaultUserDetails
     mobileNumber: faker.phone.number()
   };
 
-  // Initiate sign-up process
+  // Step 1: Navigate to the sign-in page and initiate the sign-up process
   await homePage.clickSignIn();
   await signUpPage.verifyNewUserSignupVisible();
 
-  // Enter name and email, then proceed to the next step
+  // Step 2: Fill in the basic information (name and email), then proceed
   await signUpPage.enterNameAndEmail(userDetails.firstName, userDetails.email);
   await signUpPage.clickSignupButton();
   await signUpPage.verifyEnterAccountInformationVisible();
 
+  // Step 3: Complete the account information form
   await signUpPage.fillAccountInformation(userDetails);
   await signUpPage.clickCreateAccountButton();
 
-  // Verify account creation and navigate to the home page
+  // Step 4: Verify account creation and navigate to the home page
   await signUpPage.verifyAccountCreatedVisible();
   await signUpPage.clickContinueButton();
   await accountPage.verifyLoggedInAsUsernameVisible(userDetails.firstName);
 
-  // Return essential details of the created user for further use
+  // Return essential details for further use
   return {
-    name: userDetails.firstName,
-    email: userDetails.email,
-    password: userDetails.password,
-    firstName: userDetails.name,
-    lastName: userDetails.lastName,
-    address1: userDetails.address1,
-    city: userDetails.city,
-    state: userDetails.state,
-    zipcode: userDetails.zipcode,
-    country: userDetails.country,
+    ...userDetails,
   };
 }
 
@@ -76,19 +68,18 @@ export async function registerNewUser(pom: PageObjectManager, defaultUserDetails
 export async function deleteUserAccount(pom: PageObjectManager, name: string) {
   const accountPage = pom.getAccountPage();
   
-  // Verify that the user is logged in as the correct username
+  // Verify that the correct user is logged in
   await accountPage.verifyLoggedInAsUsernameVisible(name);
 
-  // Initiate the account deletion process
+  // Step 1: Click the "Delete Account" button
   await accountPage.clickDeleteAccountButton();
 
-  // Confirm that the account has been deleted successfully
+  // Step 2: Verify that the account has been successfully deleted
   await accountPage.verifyAccountDeletedVisible();
 }
 
 /**
- * Logs out the user from the application by verifying that the user is logged in
- * and then clicking the logout button.
+ * Logs out the user from the application.
  * 
  * @param pom - The PageObjectManager instance used to interact with various pages.
  * @param name - The username of the account to log out.
@@ -96,10 +87,10 @@ export async function deleteUserAccount(pom: PageObjectManager, name: string) {
 export async function logout(pom: PageObjectManager, name: string) {
   const homePage = pom.getHomePage();
   const accountPage = pom.getAccountPage();
-  
-  // Verify that the user is logged in as the correct username
+
+  // Verify that the correct user is logged in
   await accountPage.verifyLoggedInAsUsernameVisible(name);
 
-  // Perform the logout action from the home page
+  // Log the user out
   await homePage.logout();
 }

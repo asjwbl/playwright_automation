@@ -1,4 +1,7 @@
 import { expect, Page } from '@playwright/test';
+import { ButtonComponent } from '../components/basic_components/Button';
+import { InputComponent } from '../components/basic_components/Input';
+import { TextAreaComponent } from '../components/basic_components/TextArea';
 
 /**
  * Checkout Page Object handles all interactions on the checkout page.
@@ -6,8 +9,36 @@ import { expect, Page } from '@playwright/test';
 export class CheckoutPage {
   private page: Page;
 
+  private _placeOrderButton: ButtonComponent | null = null;
+  private _payAndConfirmOrderButton: ButtonComponent | null = null;
+  private _orderCommentInput: TextAreaComponent | null = null;
+
   constructor(page: Page) {
     this.page = page;
+  }
+
+  // Getter for "Place Order" button (cached)
+  get placeOrderButton(): ButtonComponent {
+    if (!this._placeOrderButton) {
+      this._placeOrderButton = new ButtonComponent(this.page, 'a:has-text("Place Order")');
+    }
+    return this._placeOrderButton;
+  }
+
+  // Getter for "Pay and Confirm Order" button (cached)
+  get payAndConfirmOrderButton(): ButtonComponent {
+    if (!this._payAndConfirmOrderButton) {
+      this._payAndConfirmOrderButton = new ButtonComponent(this.page, 'button:has-text("Pay and Confirm Order")');
+    }
+    return this._payAndConfirmOrderButton;
+  }
+
+  // Getter for the order comment TextArea (cached)
+  get orderCommentInput(): TextAreaComponent {
+    if (!this._orderCommentInput) {
+      this._orderCommentInput = new TextAreaComponent(this.page, 'textarea[name="message"]');
+    }
+    return this._orderCommentInput;
   }
 
   /**
@@ -46,14 +77,14 @@ export class CheckoutPage {
    * @param comment - The comment to enter for the order.
    */
   async enterOrderComment(comment: string) {
-    await this.page.fill('textarea[name="message"]', comment);
+    await this.orderCommentInput.enterText(comment);
   }
 
   /**
    * Clicks the "Place Order" button.
    */
   async clickPlaceOrderButton() {
-    await this.page.click('a:has-text("Place Order")');
+    await this.placeOrderButton.click();
   }
 
   /**
@@ -68,18 +99,24 @@ export class CheckoutPage {
     expirationMonth: string;
     expirationYear: string;
   }) {
-    await this.page.fill('input[name="name_on_card"]', paymentDetails.nameOnCard);
-    await this.page.fill('input[name="card_number"]', paymentDetails.cardNumber);
-    await this.page.fill('input[name="cvc"]', paymentDetails.cvc);
-    await this.page.fill('input[name="expiry_month"]', paymentDetails.expirationMonth);
-    await this.page.fill('input[name="expiry_year"]', paymentDetails.expirationYear);
+    const nameOnCardInput = new InputComponent(this.page, 'input[name="name_on_card"]');
+    const cardNumberInput = new InputComponent(this.page, 'input[name="card_number"]');
+    const cvcInput = new InputComponent(this.page, 'input[name="cvc"]');
+    const expirationMonthInput = new InputComponent(this.page, 'input[name="expiry_month"]');
+    const expirationYearInput = new InputComponent(this.page, 'input[name="expiry_year"]');
+
+    await nameOnCardInput.fill(paymentDetails.nameOnCard);
+    await cardNumberInput.fill(paymentDetails.cardNumber);
+    await cvcInput.fill(paymentDetails.cvc);
+    await expirationMonthInput.fill(paymentDetails.expirationMonth);
+    await expirationYearInput.fill(paymentDetails.expirationYear);
   }
 
   /**
    * Clicks the "Pay and Confirm Order" button to complete the purchase.
    */
   async clickPayAndConfirmOrderButton() {
-    await this.page.click('button:has-text("Pay and Confirm Order")');
+    await this.payAndConfirmOrderButton.click();
   }
 
   /**
