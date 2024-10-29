@@ -7,9 +7,16 @@ import { BasicComponent } from './BasicComponent';
 export class TooltipComponent extends BasicComponent {
   private tooltipLocator: Locator;
 
-  constructor(page: Page, elementLocator: string | Locator, tooltipLocator: string | Locator) {
+  constructor(
+    page: Page,
+    elementLocator: string | Locator,
+    tooltipLocator: string | Locator
+  ) {
     super(page, elementLocator);
-    this.tooltipLocator = typeof tooltipLocator === 'string' ? page.locator(tooltipLocator) : tooltipLocator;
+    this.tooltipLocator =
+      typeof tooltipLocator === 'string'
+        ? page.locator(tooltipLocator)
+        : tooltipLocator;
   }
 
   /**
@@ -38,7 +45,9 @@ export class TooltipComponent extends BasicComponent {
   async verifyTooltipText(expectedText: string): Promise<void> {
     const tooltipText = await this.getTooltipText();
     if (tooltipText !== expectedText.trim()) {
-      throw new Error(`Expected tooltip text "${expectedText}", but got "${tooltipText}"`);
+      throw new Error(
+        `Expected tooltip text "${expectedText}", but got "${tooltipText}"`
+      );
     }
   }
 

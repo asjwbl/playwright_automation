@@ -51,7 +51,6 @@ test.describe('UI Test Cases', () => {
 
   // Login with correct email and password
   test('should login a user with correct email and password', async () => {
-   
     const signUpPage = pom.getSignUpPage();
     const accountPage = pom.getAccountPage();
 
@@ -72,7 +71,6 @@ test.describe('UI Test Cases', () => {
 
   // Login with invalid credentials test
   test('Login with invalid credentials', async () => {
-   
     const signUpPage = pom.getSignUpPage();
 
     await homePage.clickSignIn();
@@ -108,7 +106,6 @@ test.describe('UI Test Cases', () => {
 
   // Submit Contact Us form test case
   test('should submit the Contact Us form successfully', async () => {
-
     const contactUsPage = pom.getContactUsPage();
 
     await homePage.clickContactUsLink();
@@ -134,7 +131,6 @@ test.describe('UI Test Cases', () => {
 
   // Navigate to the Test Cases page
   test('should navigate to the Test Cases page successfully', async () => {
-
     await homePage.clickTestCases();
 
     const testCasesPageTitle = await page.title();
@@ -145,7 +141,6 @@ test.describe('UI Test Cases', () => {
 
   // Navigate to All Products page and verify details
   test('should navigate to the All Products page and verify product details', async () => {
-
     const productsPage = pom.getProductsPage();
     const productDetailsPage = pom.getProductDetailsPage();
 
@@ -187,7 +182,6 @@ test.describe('UI Test Cases', () => {
 
   // Search for a product and verify search results
   test('should search for a product and verify the search results', async () => {
-
     const productsPage = pom.getProductsPage();
 
     await homePage.clickProducts();
@@ -203,7 +197,6 @@ test.describe('UI Test Cases', () => {
 
   // Verify subscription functionality on Home page
   test('should verify subscription functionality', async () => {
-
     await homePage.scrollToFooter();
     await homePage.verifySubscriptionText();
     await homePage.enterSubscriptionEmail(faker.internet.email());
@@ -213,7 +206,6 @@ test.describe('UI Test Cases', () => {
 
   // Verify subscription functionality on Cart page
   test('should verify subscription functionality in the Cart page', async () => {
-
     await homePage.clickCart();
     await homePage.scrollToFooter();
     await homePage.verifySubscriptionText();
@@ -224,7 +216,6 @@ test.describe('UI Test Cases', () => {
 
   // Add products to the cart and verify details
   test('should add products to the cart and verify their details', async () => {
-    
     const productsPage = pom.getProductsPage();
     const cartPage = pom.getCartPage();
     const viewCartDialog = pom.getViewCartDialog();
@@ -309,7 +300,6 @@ test.describe('UI Test Cases', () => {
 
   // Place Order: Register before Checkout
   test('Place Order: Register before Checkout', async () => {
- 
     const productsPage = pom.getProductsPage();
     const cartPage = pom.getCartPage();
     const checkoutPage = pom.getCheckoutPage();
@@ -352,14 +342,12 @@ test.describe('UI Test Cases', () => {
     await checkoutPage.verifyOrderSuccessMessage();
     await deleteUserAccount(pom, firstName);
   });
-  
 
   test('Remove Products From Cart', async () => {
-
     const productsPage = pom.getProductsPage();
     const cartPage = pom.getCartPage();
     const viewCartDialog = pom.getViewCartDialog();
-  
+
     await homePage.clickProducts();
     await productsPage.verifyAllProductsPageVisible();
     await productsPage.addProductToCart(1);
@@ -372,7 +360,6 @@ test.describe('UI Test Cases', () => {
   });
 
   test('should view and navigate through category products', async () => {
-    
     await homePage.selectCategory(' Women');
     await homePage.selectSubCategory('Dress');
     await homePage.verifyCategoryPageHeader('WOMEN - DRESS PRODUCTS');
