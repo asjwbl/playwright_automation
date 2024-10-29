@@ -5,7 +5,7 @@ import { BasicComponent } from './BasicComponent';
  * TextAreaComponent class to handle interactions with a textarea element on a web page.
  */
 export class TextAreaComponent extends BasicComponent {
-  constructor(page: Page, locator: string) {
+  constructor(page: Page, locator: string | Locator) {
     super(page, locator);
   }
 
@@ -75,7 +75,7 @@ export class TextAreaComponent extends BasicComponent {
    */
   async appendText(text: string): Promise<void> {
     try {
-      await this.locator.type(text);
+      await this.locator.fill(text);
     } catch (error: unknown) {
       if (error instanceof Error) {
         console.error(

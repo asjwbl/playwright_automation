@@ -1,6 +1,9 @@
 import { BasePage } from './BasePage';
 import { ButtonComponent } from '../components/basic_components/Button';
 import { InputComponent } from '../components/basic_components/Input';
+import { LabelComponent } from '../components/basic_components/Label';
+import { ClickableComponent } from '../components/basic_components/Clickable';
+import { LinkComponent } from '../components/basic_components/Link';
 
 /**
  * Class to handle interactions with the homepage of AutomationExercise website.
@@ -179,5 +182,32 @@ export class HomePage extends BasePage {
     await this.page.waitForSelector(
       'div:has-text("You have been successfully subscribed!")'
     );
+  }
+
+  /**
+   * Selects a main category, such as 'Women' or 'Men', from the categories sidebar.
+   * @param category - The main category name to select.
+   */
+  async selectCategory(category: string): Promise<void> {
+    const categoryLink = ClickableComponent.byRole(this.page, 'link', { name: category });
+    await categoryLink.click();
+  }
+
+  /**
+   * Selects a sub-category within a main category, such as 'Dress' under 'Women'.
+   * @param subCategory - The sub-category name to select.
+   */
+  async selectSubCategory(subCategory: string): Promise<void> {
+    const subCategoryLink = LinkComponent.byRole(this.page, 'link', { name: subCategory });
+    await subCategoryLink.click();
+  }
+
+  /**
+   * Verifies that the category page is displayed with the expected header text.
+   * @param expectedText - The expected text to verify on the category page.
+   */
+  async verifyCategoryPageHeader(expectedText: string): Promise<void> {
+    const headerLabel = new LabelComponent(this.page, `h2:has-text("${expectedText}")`);
+    await headerLabel.isVisible();
   }
 }

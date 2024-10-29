@@ -5,7 +5,7 @@ import { BasicComponent } from './BasicComponent';
  * ToastComponent class to handle interactions with toast notifications.
  */
 export class ToastComponent extends BasicComponent {
-  constructor(page: Page, locator: string) {
+  constructor(page: Page, locator: string | Locator) {
     super(page, locator);
   }
 

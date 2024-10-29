@@ -5,7 +5,7 @@ import { BasicComponent } from './BasicComponent';
  * LabelComponent class to handle interactions with label elements on a web page.
  */
 export class LabelComponent extends BasicComponent {
-  constructor(page: Page, locator: string) {
+  constructor(page: Page, locator: string | Locator) {
     super(page, locator);
   }
 

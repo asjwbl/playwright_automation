@@ -1,11 +1,11 @@
-import { Page } from '@playwright/test';
+import { Locator, Page } from '@playwright/test';
 import { BasicComponent } from './BasicComponent';
 
 /**
  * DropdownComponent class to handle dropdown interactions.
  */
 export class DropdownComponent extends BasicComponent {
-  constructor(page: Page, locator: string) {
+  constructor(page: Page, locator: string | Locator) {
     super(page, locator);
   }
 

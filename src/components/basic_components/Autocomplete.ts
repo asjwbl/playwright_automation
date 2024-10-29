@@ -11,7 +11,7 @@ export class AutocompleteComponent extends BasicComponent {
 
   constructor(
     page: Page,
-    locator: string,
+    locator: string | Locator,
     suggestionSelector?: string,
     sleepTimeBeforeClick?: number,
     sleepTimeBeforeOpening?: number

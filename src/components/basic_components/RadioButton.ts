@@ -1,11 +1,11 @@
-import { Page } from '@playwright/test';
+import { Locator, Page } from '@playwright/test';
 import { BasicComponent } from './BasicComponent';
 
 /**
  * RadioButtonComponent class handles interactions with radio button elements on a webpage.
  */
 export class RadioButtonComponent extends BasicComponent {
-  constructor(page: Page, locator: string) {
+  constructor(page: Page, locator: string | Locator) {
     super(page, locator);
   }
 

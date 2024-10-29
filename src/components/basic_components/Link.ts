@@ -6,7 +6,7 @@ import { BasicComponent } from './BasicComponent';
  * It extends BasicComponent and adds functionality specific to link elements.
  */
 export class LinkComponent extends BasicComponent {
-  constructor(page: Page, locator: string) {
+  constructor(page: Page, locator: string | Locator) {
     super(page, locator);
   }
 
