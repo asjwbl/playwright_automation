@@ -35,7 +35,7 @@ export class CartPage extends BasePage {
 
   /**
    * Removes a product from the cart by clicking the 'X' button corresponding to the product.
-   * 
+   *
    * @param index - The index of the product in the cart (1-based index).
    */
   async removeProduct(index: number): Promise<void> {
@@ -48,7 +48,7 @@ export class CartPage extends BasePage {
 
   /**
    * Verifies that a product has been removed from the cart by checking its absence.
-   * 
+   *
    * @param index - The index of the product that was expected to be removed.
    */
   async verifyProductRemoved(index: number): Promise<void> {

@@ -189,7 +189,9 @@ export class HomePage extends BasePage {
    * @param category - The main category name to select.
    */
   async selectCategory(category: string): Promise<void> {
-    const categoryLink = ClickableComponent.byRole(this.page, 'link', { name: category });
+    const categoryLink = ClickableComponent.byRole(this.page, 'link', {
+      name: category,
+    });
     await categoryLink.click();
   }
 
@@ -198,7 +200,9 @@ export class HomePage extends BasePage {
    * @param subCategory - The sub-category name to select.
    */
   async selectSubCategory(subCategory: string): Promise<void> {
-    const subCategoryLink = LinkComponent.byRole(this.page, 'link', { name: subCategory });
+    const subCategoryLink = LinkComponent.byRole(this.page, 'link', {
+      name: subCategory,
+    });
     await subCategoryLink.click();
   }
 
@@ -207,7 +211,10 @@ export class HomePage extends BasePage {
    * @param expectedText - The expected text to verify on the category page.
    */
   async verifyCategoryPageHeader(expectedText: string): Promise<void> {
-    const headerLabel = new LabelComponent(this.page, `h2:has-text("${expectedText}")`);
+    const headerLabel = new LabelComponent(
+      this.page,
+      `h2:has-text("${expectedText}")`
+    );
     await headerLabel.isVisible();
   }
 }
