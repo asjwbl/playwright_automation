@@ -1,4 +1,4 @@
-import { Page } from '@playwright/test';
+import { Locator, Page } from '@playwright/test';
 import { BasicComponent } from './BasicComponent';
 
 /**
@@ -6,7 +6,7 @@ import { BasicComponent } from './BasicComponent';
  * with additional actions like hover, double-click, and right-click.
  */
 export class ClickableComponent extends BasicComponent {
-  constructor(page: Page, locator: string) {
+  constructor(page: Page, locator: string | Locator) {
     super(page, locator);
   }
 

@@ -5,7 +5,7 @@ import { BasicComponent } from './BasicComponent';
  * ImageComponent class to handle interactions with image elements on a web page.
  */
 export class ImageComponent extends BasicComponent {
-  constructor(page: Page, locator: string) {
+  constructor(page: Page, locator: string | Locator) {
     super(page, locator);
   }
 

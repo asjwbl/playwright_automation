@@ -34,6 +34,29 @@ export class CartPage extends BasePage {
   }
 
   /**
+   * Removes a product from the cart by clicking the 'X' button corresponding to the product.
+   * 
+   * @param index - The index of the product in the cart (1-based index).
+   */
+  async removeProduct(index: number): Promise<void> {
+    const removeButton = new ButtonComponent(
+      this.page,
+      `tr[id='product-${index}'] a[class='cart_quantity_delete']`
+    );
+    await removeButton.click();
+  }
+
+  /**
+   * Verifies that a product has been removed from the cart by checking its absence.
+   * 
+   * @param index - The index of the product that was expected to be removed.
+   */
+  async verifyProductRemoved(index: number): Promise<void> {
+    const productSelector = `.cart_info .cart_description:nth-child(${index})`;
+    await expect(this.page.locator(productSelector)).toHaveCount(0);
+  }
+
+  /**
    * Verifies the quantity of a product in the shopping cart.
    * @param expectedQuantity - The expected quantity of the product in the cart.
    */
@@ -57,7 +80,6 @@ export class CartPage extends BasePage {
 
   /**
    * Verifies the details of a specific product in the shopping cart by its index.
-   * This includes checking the product's name, price, quantity, and total.
    *
    * @param index - The index of the product in the cart (1-based index).
    * @param expectedDetails - An object containing the expected details of the product:
