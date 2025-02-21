@@ -7,9 +7,9 @@ export default defineConfig({
     baseURL: 'http://automationexercise.com',
     actionTimeout: 30000,
     navigationTimeout: 30000,
-    trace: 'on',
+    trace: 'on-first-retry', // Collect trace only on retries for debugging
   },
   testDir: './test',
-  retries: 1,
-  reporter: [['list'], ['html']],
+  retries: 2, // to help identify flaky tests
+  reporter: [['list'], ['html'], ['line']],
 });

@@ -5,9 +5,9 @@ import { BasicComponent } from './BasicComponent';
  * Represents an autocomplete component on a web page.
  */
 export class AutocompleteComponent extends BasicComponent {
-  private suggestionSelector?: Locator; // Optional suggestion selector
-  private sleepTimeBeforeClick: number | undefined;
-  private sleepTimeBeforeOpening: number | undefined;
+  private suggestionSelector?: Locator;
+  private sleepTimeBeforeClick?: number;
+  private sleepTimeBeforeOpening?: number;
 
   constructor(
     page: Page,
@@ -34,14 +34,13 @@ export class AutocompleteComponent extends BasicComponent {
       await this.page.waitForTimeout(this.sleepTimeBeforeOpening);
     }
 
-    const element = this.locator;
-    await element.fill(value);
+    await this.locator.fill(value);
 
     if (this.sleepTimeBeforeClick) {
       await this.page.waitForTimeout(this.sleepTimeBeforeClick);
     }
 
-    await element.press('Enter'); // Simulate pressing Enter after input
+    await this.locator.press('Enter'); // Simulate pressing Enter after input
   }
 
   /**
@@ -52,14 +51,7 @@ export class AutocompleteComponent extends BasicComponent {
    */
   async waitForSuggestions(timeout: number = 1000): Promise<void> {
     if (this.suggestionSelector) {
-      try {
-        await this.suggestionSelector.waitFor({ state: 'visible', timeout });
-      } catch (error: unknown) {
-        console.error(
-          `Error waiting for suggestions to appear: ${(error as Error).message}`
-        );
-        throw error;
-      }
+      await this.suggestionSelector.waitFor({ state: 'visible', timeout });
     } else {
       console.warn(
         'Suggestion selector is not provided, skipping suggestion wait.'
@@ -73,32 +65,21 @@ export class AutocompleteComponent extends BasicComponent {
    * @param suggestionText - The text of the suggestion to select.
    */
   async selectSuggestion(suggestionText: string): Promise<void> {
-    try {
-      const suggestion = this.page.locator(`text="${suggestionText}"`);
-      await suggestion.click();
-    } catch (error: unknown) {
-      console.error(
-        `Error selecting suggestion from autocomplete: ${(error as Error).message}`
-      );
-      throw error;
+    const suggestion = this.page.locator(`text="${suggestionText}"`);
+    if (!(await suggestion.isVisible())) {
+      throw new Error(`Suggestion with text "${suggestionText}" not found.`);
     }
+    await suggestion.click();
   }
 
   /**
    * Clears the input field by selecting all text and deleting it.
    */
   async clearInput(): Promise<void> {
-    try {
-      const value = await this.locator.inputValue();
-      if (value) {
-        await this.locator.press('Control+A'); // Select all input
-        await this.locator.press('Backspace'); // Delete the content
-      }
-    } catch (error: unknown) {
-      console.error(
-        `Error clearing the autocomplete input field: ${(error as Error).message}`
-      );
-      throw error;
+    const value = await this.locator.inputValue();
+    if (value) {
+      await this.locator.press('Control+A'); // Select all input
+      await this.locator.press('Backspace'); // Delete the content
     }
   }
 
@@ -106,13 +87,6 @@ export class AutocompleteComponent extends BasicComponent {
    * Dismisses the autocomplete suggestions by pressing the Escape key.
    */
   async dismissSuggestions(): Promise<void> {
-    try {
-      await this.locator.press('Escape');
-    } catch (error: unknown) {
-      console.error(
-        `Error dismissing autocomplete suggestions: ${(error as Error).message}`
-      );
-      throw error;
-    }
+    await this.locator.press('Escape');
   }
 }

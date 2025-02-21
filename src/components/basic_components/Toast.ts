@@ -13,14 +13,7 @@ export class ToastComponent extends BasicComponent {
    * Dismisses the toast notification by clicking on it.
    */
   async dismiss(): Promise<void> {
-    try {
-      await this.locator.click();
-    } catch (error: unknown) {
-      console.error(
-        `Error dismissing the toast notification: ${(error as Error).message}`
-      );
-      throw error;
-    }
+    await this.locator.click();
   }
 
   /**
@@ -30,15 +23,7 @@ export class ToastComponent extends BasicComponent {
    * @returns A boolean indicating whether the toast is visible.
    */
   async isVisibleWithMessage(message: string): Promise<boolean> {
-    try {
-      const toast = await this.page.locator(`text=${message}`).isVisible();
-      return toast;
-    } catch (error: unknown) {
-      console.error(
-        `Error checking if the toast notification is visible with message: ${(error as Error).message}`
-      );
-      return false;
-    }
+    return this.page.locator(`text=${message}`).isVisible();
   }
 
   /**
@@ -47,30 +32,15 @@ export class ToastComponent extends BasicComponent {
    * @returns A boolean indicating whether an error toast is visible.
    */
   async hasError(): Promise<boolean> {
-    try {
-      const errorToast = await this.page
-        .locator('[data-testid="toast-error"]')
-        .isVisible();
-      return errorToast;
-    } catch (error: unknown) {
-      console.error(
-        `Error checking for toast error: ${(error as Error).message}`
-      );
-      return false;
-    }
+    return this.page.locator('[data-testid="toast-error"]').isVisible();
   }
 
   /**
    * Waits for the toast notification to disappear from the page.
+   *
+   * @param timeout - The maximum time to wait before considering the toast disappeared (default: 5000ms).
    */
   async waitForDismiss(timeout: number = 5000): Promise<void> {
-    try {
-      await this.locator.waitFor({ state: 'detached', timeout });
-    } catch (error: unknown) {
-      console.error(
-        `Error waiting for the toast notification to disappear: ${(error as Error).message}`
-      );
-      throw error;
-    }
+    await this.locator.waitFor({ state: 'detached', timeout });
   }
 }

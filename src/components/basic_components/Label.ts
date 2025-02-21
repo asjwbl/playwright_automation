@@ -14,17 +14,8 @@ export class LabelComponent extends BasicComponent {
    *
    * @returns A string representing the text inside the label.
    */
-  async getText(): Promise<string | null> {
-    try {
-      return await this.locator.textContent();
-    } catch (error: unknown) {
-      if (error instanceof Error) {
-        console.error(`Error retrieving label text: ${error.message}`);
-      } else {
-        console.error(`An unexpected error occurred: ${error}`);
-      }
-      throw error;
-    }
+  async getText(): Promise<string> {
+    return (await this.locator.textContent()) || ''; // Fallback to empty string if null
   }
 
   /**
@@ -33,31 +24,13 @@ export class LabelComponent extends BasicComponent {
    * @returns A boolean indicating whether the label is visible.
    */
   async isVisible(): Promise<boolean> {
-    try {
-      return await this.locator.isVisible();
-    } catch (error: unknown) {
-      if (error instanceof Error) {
-        console.error(`Error checking label visibility: ${error.message}`);
-      } else {
-        console.error(`An unexpected error occurred: ${error}`);
-      }
-      throw error;
-    }
+    return this.locator.isVisible();
   }
 
   /**
    * Clicks on the label element.
    */
   async click(): Promise<void> {
-    try {
-      await this.locator.click();
-    } catch (error: unknown) {
-      if (error instanceof Error) {
-        console.error(`Error clicking on the label: ${error.message}`);
-      } else {
-        console.error(`An unexpected error occurred: ${error}`);
-      }
-      throw error;
-    }
+    await this.locator.click();
   }
 }
