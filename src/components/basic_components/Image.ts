@@ -12,37 +12,19 @@ export class ImageComponent extends BasicComponent {
   /**
    * Retrieves the 'src' attribute (image URL) of the image element.
    *
-   * @returns A string representing the source URL of the image.
+   * @returns The source URL of the image.
    */
   async getSrc(): Promise<string | null> {
-    try {
-      return await this.locator.getAttribute('src');
-    } catch (error: unknown) {
-      if (error instanceof Error) {
-        console.error(`Error retrieving image src: ${error.message}`);
-      } else {
-        console.error(`An unexpected error occurred: ${error}`);
-      }
-      throw error;
-    }
+    return this.locator.getAttribute('src');
   }
 
   /**
    * Retrieves the 'alt' attribute (alternative text) of the image element.
    *
-   * @returns A string representing the alt text of the image.
+   * @returns The alt text of the image.
    */
   async getAltText(): Promise<string | null> {
-    try {
-      return await this.locator.getAttribute('alt');
-    } catch (error: unknown) {
-      if (error instanceof Error) {
-        console.error(`Error retrieving image alt text: ${error.message}`);
-      } else {
-        console.error(`An unexpected error occurred: ${error}`);
-      }
-      throw error;
-    }
+    return this.locator.getAttribute('alt');
   }
 
   /**
@@ -51,31 +33,13 @@ export class ImageComponent extends BasicComponent {
    * @returns A boolean indicating whether the image is visible.
    */
   async isVisible(): Promise<boolean> {
-    try {
-      return await this.locator.isVisible();
-    } catch (error: unknown) {
-      if (error instanceof Error) {
-        console.error(`Error checking image visibility: ${error.message}`);
-      } else {
-        console.error(`An unexpected error occurred: ${error}`);
-      }
-      throw error;
-    }
+    return this.locator.isVisible();
   }
 
   /**
    * Clicks on the image element.
    */
   async click(): Promise<void> {
-    try {
-      await this.locator.click();
-    } catch (error: unknown) {
-      if (error instanceof Error) {
-        console.error(`Error clicking on the image: ${error.message}`);
-      } else {
-        console.error(`An unexpected error occurred: ${error}`);
-      }
-      throw error;
-    }
+    await this.locator.click();
   }
 }
